@@ -157,7 +157,7 @@ const DialogTitle = withStyles(styles)((props) => {
                 {
                   prods.length > 0 ?
                   prods.map((p,key) => (
-                    <ProdCard data={p} />
+                    <ProdCard data={p} key={key}/>
                   ))
                   :
                   <span >Nothing to show here.</span>

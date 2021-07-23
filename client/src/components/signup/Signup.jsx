@@ -159,7 +159,7 @@ const [passvisible,setPassvisible]=useState(false)
   
     localStorage.setItem('profile', JSON.stringify({name}))
 
-    history.push({pathname:'/dashboard', search:`?room=${"Community"}`})
+    history.push(`/dashboard/all-community`)
   
     
   

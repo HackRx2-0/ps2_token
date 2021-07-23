@@ -75,7 +75,7 @@ if(loginMutation.isLoading){
 if(loginMutation.isSuccess){
 
   localStorage.setItem('profile', JSON.stringify({ ...loginMutation.data.data}))
-  history.push({pathname:'/dashboard', search:`room=${"Community"}`})
+  history.push(`/dashboard/all-community`)
 
   
 

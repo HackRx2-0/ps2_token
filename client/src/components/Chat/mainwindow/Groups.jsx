@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button'
-import {useHistory} from 'react-router-dom';
+import {useHistory, Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,18 +15,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Groups({GroupName, key}) {
+export default function Groups({grp, key}) {
   const classes = useStyles();
   const history = useHistory();
 
   const handleClick = () => {
-    window.location.reload();
-    history.push({ pathname : '/dashboard' , search : `room=${GroupName}`})
+    history.replace({ pathname : `/dashboard/all-community`})
   }
 
   return (
-      <Button key={key} onClick={handleClick} className={classes.root} variant="outlined">
-      {GroupName}
-      </Button>
+        <Link to={`/dashboard/${grp}`} key={key} className={classes.root} variant="outlined">
+        {grp}
+        </Link>
   );
 }

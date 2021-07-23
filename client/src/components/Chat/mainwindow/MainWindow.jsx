@@ -6,25 +6,18 @@ import Divider from "@material-ui/core/Divider";
 import Drawer from "@material-ui/core/Drawer";
 import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import MailIcon from "@material-ui/icons/Mail";
 import MenuIcon from "@material-ui/icons/Menu";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import Chat from '../../spam/Chat/Chat'
-import Groups from "./Groups";
 import TextField  from "@material-ui/core/TextField";
 import {useHistory} from 'react-router-dom';
 import Button from "@material-ui/core/Button"
 
 import { alpha,makeStyles, useTheme } from "@material-ui/core/styles";
-
+import {Link, useParams} from 'react-router-dom'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -76,6 +69,24 @@ const useStyles = makeStyles((theme) => ({
   rootBtn: {
     display: "flex",
     justifyContent : "flex-start",
+    backgroundColor: "#282C34",
+    padding : "10px 4px ",
+    borderRadius : "4px",
+    margin : "10px 15px",
+//     4EB4CB
+// 282C34
+// E7E6E6
+    color : "white",
+    width : "calc(90%)",
+    fontWeight: "600",
+    "&:hover":{
+        backgroundColor:"#282C34"
+    },
+    textDecoration : "none"
+  },
+  activeBtn: {
+    display: "flex",
+    justifyContent : "flex-start",
     backgroundColor: "#4EB4CB",
     padding : "10px 4px ",
     borderRadius : "4px",
@@ -88,11 +99,11 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "600",
     "&:hover":{
         backgroundColor:"#1EB4CB"
-    }
+    },
+    textDecoration : "none"
   },
   
 }));
-const GROUP=["all-community"];
 
 function ResponsiveDrawer(props) {
   const { window } = props;
@@ -100,16 +111,19 @@ function ResponsiveDrawer(props) {
   const theme = useTheme();
   const history = useHistory();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const room = useParams().id;
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const handleClick = (g) => {
-    history.push({ pathname : '/dashboard' , search : `room=${g}`})
+    history.push(`/dashboard/all-community`)
   }
 
-  const drawer = (
+  const GroupDrawer =() => {
+    const GROUP=["all-community"];
+    return(
     <div>
       <div className={classes.toolbar} />
       <Divider />
@@ -117,15 +131,15 @@ function ResponsiveDrawer(props) {
 
      {
        GROUP.map((grp, idx)=>(
-          <Button key={idx} onClick={() => handleClick(grp) } className={classes.rootBtn} variant="outlined">
+          <Link key={idx} to={`/dashboard/${grp}`} className={grp==room ? classes.activeBtn : classes.rootBtn} variant="outlined">
           {grp}
-          </Button>
+          </Link>
         ))
      }
     
      
     </div>
-  );
+  )};
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
@@ -165,7 +179,7 @@ function ResponsiveDrawer(props) {
               keepMounted: true // Better open performance on mobile.
             }}
           >
-            {drawer}
+            <GroupDrawer />
           </Drawer>
         </Hidden>
         <Hidden mdDown implementation="css">
@@ -176,12 +190,12 @@ function ResponsiveDrawer(props) {
             variant="permanent"
             open
           >
-            {drawer}
+            <GroupDrawer />
           </Drawer>
         </Hidden>
       </nav>
       <main className={classes.content}>
-        <Chat />
+        <Chat roomId={room} />
            
       </main>
     </div>

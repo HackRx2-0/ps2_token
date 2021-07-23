@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect} from "react";
 import queryString from "query-string";
 import io from "socket.io-client";
+import { useParams } from 'react-router-dom'
 
 import './Chat.css';
 
@@ -11,26 +12,19 @@ import TextContainer from "../TextContainer/TextContainer";
 import {useLocation} from "react-router-dom"
 
 let socket;
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
-const Chat = ({ location }) => {
+
+const Chat = ({ location, roomId }) => {
   const [name, setName] = useState(JSON.parse(localStorage.getItem("profile")).name);
-  const [room, setRoom] = useState("");
+  const [room, setRoom] = useState(useParams().id);
   const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const ENDPOINT = "localhost:5000";
-  let query = useQuery();
- console.log(query.get("room")) 
- console.log(JSON.parse(localStorage.getItem("profile")).name)
-
-
+  
+  const getRoom = useParams().id;
+  console.log(getRoom)
   useEffect(() => {
     //Getting the User Name and Room Name from URL
-
-
-   
     socket = io(ENDPOINT, {
       "force new connection": true,
       reconnectionAttempts: "Infinity",
@@ -40,15 +34,15 @@ const Chat = ({ location }) => {
     });
     setName(JSON.parse(localStorage.getItem("profile")).name)
 
-  
-    setRoom(query.get("room"));
+    setRoom(getRoom);
+    console.log(getRoom, "OK")
 
     socket.emit("join", { name, room }, (error) => {
       if (error) {
         alert(`${error}`);
       }
     });
-  }, [ENDPOINT]);
+  }, [ENDPOINT, roomId]);
 
   useEffect(() => {
     socket.on("message", (message) => {
