@@ -181,7 +181,7 @@ function ResponsiveDrawer(props) {
         </Hidden>
       </nav>
       <main className={classes.content}>
-        <Chat location={props.location.pathname} />
+        <Chat />
            
       </main>
     </div>

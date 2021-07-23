@@ -6,6 +6,7 @@ import Home from './components/home/Home';
 import MainWindow from './components/Chat/mainwindow/MainWindow'
 import Chat from './components/spam/Chat/Chat'
 import Join from './components/spam/Join/Join'
+import {Redirect} from 'react-router-dom'
 import {
   QueryClient,
   QueryClientProvider,
@@ -14,6 +15,9 @@ import {
 const queryClient = new QueryClient()
 
 function App() {
+
+  const isAuth = JSON.parse(localStorage.getItem("profile"));
+
   return (
     <QueryClientProvider client={queryClient}>
     <div className="App">
@@ -23,7 +27,8 @@ function App() {
       <Route path="/signup" exact component={Signup}/>
     
       <Route path="/Join" exact component={Join}/>
-      <Route path="/dashboard" component={MainWindow}/>
+      
+      <Route path="/dashboard" component={(props) => ( isAuth ? <MainWindow props={props}/> : <Redirect to="/" />)}/>
       
       </Router>
     </div>
