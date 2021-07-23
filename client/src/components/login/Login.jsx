@@ -89,9 +89,7 @@ if(loginMutation.isSuccess){
       <CssBaseline />
       <div>
         <Typography component="h1" variant="h5" className={classes.paper} >
-          <Link to="/">
-            Ncidious
-          </Link>
+            Social Commerce
         </Typography>
       </div>
       <div className={classes.paper}>
@@ -110,8 +108,6 @@ if(loginMutation.isSuccess){
             {loginMutation.error.response.data.errors[0].msg}
           </span>
         </div>:null}
-
-  
 
         <form className={classes.form} noValidate>
           <TextField

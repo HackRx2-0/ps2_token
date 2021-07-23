@@ -180,9 +180,7 @@ console.log(signupMutation)
       <CssBaseline />
       <div>
         <Typography component="h1" variant="h5" className={classes.paper} >
-          <Link to="/">
-            Ncidious
-          </Link>
+            Social Commerce
         </Typography>
       </div>
       <div className={classes.paper}>
@@ -199,10 +197,6 @@ console.log(signupMutation)
             {signupMutation.error.response.data.errors[0].msg}
           </span>
         </div>:null}
-
-
-
-
         <form className={classes.form} noValidate>
         
               <TextField
@@ -293,7 +287,7 @@ console.log(signupMutation)
           </Button>
           <Grid container justify="flex-end" >
           <Grid item >
-              <Link to="/Login" variant="body2" >
+              <Link to="/" variant="body2" >
                 {" Already have an account? Sign in"}
               </Link>
             </Grid>

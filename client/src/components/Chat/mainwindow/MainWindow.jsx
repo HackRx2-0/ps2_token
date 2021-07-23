@@ -20,6 +20,8 @@ import InputBase from '@material-ui/core/InputBase';
 import Chat from '../../spam/Chat/Chat'
 import Groups from "./Groups";
 import TextField  from "@material-ui/core/TextField";
+import {useHistory} from 'react-router-dom';
+import Button from "@material-ui/core/Button"
 
 import { alpha,makeStyles, useTheme } from "@material-ui/core/styles";
 
@@ -62,28 +64,50 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-  
+    height : '100vh',
+    paddingTop : "40px"
   },
  
  
   search:{
     width:"100%",
     padding:"20px"
-  }
+  },
+  rootBtn: {
+    display: "flex",
+    justifyContent : "flex-start",
+    backgroundColor: "#4EB4CB",
+    padding : "10px 4px ",
+    borderRadius : "4px",
+    margin : "10px 15px",
+//     4EB4CB
+// 282C34
+// E7E6E6
+    color : "white",
+    width : "calc(90%)",
+    fontWeight: "600",
+    "&:hover":{
+        backgroundColor:"#1EB4CB"
+    }
+  },
   
 }));
-const GROUP=["abc" ,"bcd","efg","hij"]
+const GROUP=["all-community"];
 
 function ResponsiveDrawer(props) {
   const { window } = props;
   const classes = useStyles();
   const theme = useTheme();
+  const history = useHistory();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const handleClick = (g) => {
+    history.push({ pathname : '/dashboard' , search : `room=${g}`})
+  }
 
   const drawer = (
     <div>
@@ -92,12 +116,11 @@ function ResponsiveDrawer(props) {
       <TextField id="outlined-basic" placeholder="Search" variant="outlined"  className={classes.search}/>
 
      {
-       GROUP.map((grp)=>{
-        return(
-          <Groups GroupName={grp}/>
-        )
-        
-       })
+       GROUP.map((grp, idx)=>(
+          <Button key={idx} onClick={() => handleClick(grp) } className={classes.rootBtn} variant="outlined">
+          {grp}
+          </Button>
+        ))
      }
     
      
@@ -158,7 +181,6 @@ function ResponsiveDrawer(props) {
         </Hidden>
       </nav>
       <main className={classes.content}>
-        <div className={classes.toolbar} />
         <Chat location={props.location.pathname} />
            
       </main>

@@ -19,13 +19,11 @@ function App() {
     <div className="App">
       <Router>
       
-      <Route path="/" exact component={Home}/>
-      <Route path="/dashboard" exact component={MainWindow}/>
-      
-      <Route path="/login" exact component={Login}/>
+      <Route path="/" exact component={Login}/>
       <Route path="/signup" exact component={Signup}/>
     
       <Route path="/Join" exact component={Join}/>
+      <Route path="/dashboard" component={MainWindow}/>
       
       </Router>
     </div>
