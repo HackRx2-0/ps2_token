@@ -157,7 +157,7 @@ const [passvisible,setPassvisible]=useState(false)
   
   if(signupMutation.isSuccess){
   
-    localStorage.setItem('profile', JSON.stringify({name}));
+    localStorage.setItem('profile', JSON.stringify({name}))
 
     history.push({pathname:'/dashboard', search:`?room=${"Community"}`})
   

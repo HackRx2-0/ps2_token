@@ -74,7 +74,7 @@ if(loginMutation.isLoading){
 
 if(loginMutation.isSuccess){
 
-  localStorage.setItem('profile', JSON.stringify({ ...loginMutation.data.data}));
+  localStorage.setItem('profile', JSON.stringify({ ...loginMutation.data.data}))
   history.push({pathname:'/dashboard', search:`room=${"Community"}`})
 
   
@@ -158,11 +158,6 @@ if(loginMutation.isSuccess){
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link to="/Forgotpass" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
               <Link to="/Signup" variant="body2">
                 {"Don't have an account? Sign Up"}

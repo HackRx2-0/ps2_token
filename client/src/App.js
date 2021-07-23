@@ -16,7 +16,7 @@ const queryClient = new QueryClient()
 
 function App() {
 
-  const isAuth = JSON.parse(localStorage.getItem("profile"));
+  // const isAuth = JSON.parse(localStorage.getItem("profile"));
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -28,7 +28,7 @@ function App() {
     
       <Route path="/Join" exact component={Join}/>
       
-      <Route path="/dashboard" component={(props) => ( isAuth ? <MainWindow props={props}/> : <Redirect to="/" />)}/>
+      <Route path="/dashboard" component={MainWindow }/>
       
       </Router>
     </div>
