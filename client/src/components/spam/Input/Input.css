@@ -1,28 +1,53 @@
 .form {
-    display: flex;
-    border-top: 2px solid #D3D3D3;
-  }
- 
-  .input {
-    border: none;
-    border-radius: 0;
-    padding: 0 0 0 5%;
-    width: 80%;
-    font-size: 1.2em;
-  }
-  
-  input:focus, textarea:focus, select:focus{
-    outline: none;
-  }
-  
-  .sendButton {
-    color: #fff !important;
-    text-transform: uppercase;
-    text-decoration: none;
-    background: #4EB4CB;
-    padding: 20px;
-    display: inline-block;
-    border: none;
-    width: 20%;
-  }
-  
+  display: flex;
+  border-top: 2px solid #d3d3d3;
+}
+
+.input {
+  border: none;
+  border-radius: 0;
+  padding: 0 0 0 5%;
+  width: 80%;
+  font-size: 1.2em;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+.sendButton {
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #4eb4cb;
+  padding: 20px;
+  display: inline-block;
+  border: none;
+  width: 20%;
+}
+.sendButton:hover {
+  cursor: pointer;
+  background: #3ac9e9;
+}
+.fileBtn {
+  background-color: #4eb4cb;
+  color: white;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 40px;
+}
+.fileBtn:hover {
+  background-color: #47cdeb;
+  cursor: pointer;
+}
+.inputDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -22,8 +22,7 @@ function App() {
           <Route path="/signup" exact component={Signup} />
 
           <Route path="/Join" exact component={Join} />
-
-          <Route exact path="/dashboard/:id" component={MainWindow} />
+          <Route exact path="/dashboard/:id" component={(props) =>  <MainWindow props={props} />} />
         </Router>
       </div>
     </QueryClientProvider>

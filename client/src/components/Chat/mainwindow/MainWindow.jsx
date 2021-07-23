@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -117,27 +117,29 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleClick = (g) => {
-    history.push(`/dashboard/all-community`)
+  const Groups = ({search}) => {
+    const GROUP=["all-community","test"];
+    return (
+      <>
+     {
+      GROUP.filter(g => g.substr(0,search.length).toLowerCase() === search.toLowerCase() || !search.length ).map((grp, idx)=>(
+         <Link key={idx} to={`/dashboard/${grp}`} className={grp==room ? classes.activeBtn : classes.rootBtn} variant="outlined">
+         {grp}
+         </Link>
+       ))
+    }
+    </>
+    )
   }
 
   const GroupDrawer =() => {
-    const GROUP=["all-community"];
+    const [search,setSearch] = useState('');
     return(
     <div>
       <div className={classes.toolbar} />
       <Divider />
-      <TextField id="outlined-basic" placeholder="Search" variant="outlined"  className={classes.search}/>
-
-     {
-       GROUP.map((grp, idx)=>(
-          <Link key={idx} to={`/dashboard/${grp}`} className={grp==room ? classes.activeBtn : classes.rootBtn} variant="outlined">
-          {grp}
-          </Link>
-        ))
-     }
-    
-     
+      <TextField value={search} onChange={e => setSearch(e.target.value)} id="outlined-basic" placeholder="Search" variant="outlined"  className={classes.search}/>
+      <Groups search={search} />
     </div>
   )};
 

@@ -2,7 +2,7 @@ import React, { useState, useLayoutEffect, useEffect} from "react";
 import queryString from "query-string";
 import io from "socket.io-client";
 import { useParams } from 'react-router-dom'
-
+import {useHistory} from 'react-router'
 import './Chat.css';
 
 import InfoBar from '../InfoBar/InfoBar.js';
@@ -19,12 +19,36 @@ const Chat = ({ location, roomId }) => {
   const [users, setUsers] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
+  const [file,setFile] = useState(null);
+  const history = useHistory();
   const ENDPOINT = "localhost:5000";
   
-  const getRoom = useParams().id;
+  let getRoom = useParams().id;
   console.log(getRoom)
+
+  useEffect(() => {   
+  setMessages([]);
+  setMessage(''); 
+  socket = io(ENDPOINT, {
+    "force new connection": true,
+    reconnectionAttempts: "Infinity",
+    timeout: 10000,
+    transports: ["websocket"],
+
+  });
+  setName(JSON.parse(localStorage.getItem("profile")).name)
+  socket.emit("join", { name, room }, (error) => {
+    if (error) {
+      alert(`${error}`);
+    }
+  });
+  
+  },[])
+
   useEffect(() => {
-    //Getting the User Name and Room Name from URL
+    //Getting the User Name and Room Name from URL 
+  setMessages([]);
+  setMessage('');
     socket = io(ENDPOINT, {
       "force new connection": true,
       reconnectionAttempts: "Infinity",
@@ -42,11 +66,12 @@ const Chat = ({ location, roomId }) => {
         alert(`${error}`);
       }
     });
-  }, [ENDPOINT, roomId]);
+  }, [ENDPOINT, getRoom,useParams().id]);
 
   useEffect(() => {
     socket.on("message", (message) => {
       setMessages(messages => [ ...messages, message ]);
+      console.log(message)
     });
 
     socket.on("roomData", ({ users }) => {
@@ -56,10 +81,25 @@ const Chat = ({ location, roomId }) => {
 
   const sendMessage = (event) => {
     event.preventDefault();
-
-    if (message) {
+    if (file) {
+      const msgObj = {
+        // id : yourID,
+        type : "file",
+        body : file,
+        mimetype : file.type,
+        fileName : file.name,
+      }
+      socket.emit("sendMessage", msgObj, () => setFile());
+      setMessage("");
+    }
+    else if (message) {
       socket.emit("sendMessage", message, () => setMessage(""));
     }
+    
+    // socket.on("message", (message) => {
+    //   setMessages(messages => [ ...messages, message ]);
+    //   console.log(message)
+    // });
   };
   
 
@@ -68,7 +108,7 @@ const Chat = ({ location, roomId }) => {
       <div className="container">
          {/* <InfoBar room={room} /> */}
          <Messages messages={messages} name={name} />
-         <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />        
+         <Input message={message} setMessage={setMessage} sendMessage={sendMessage} setFile={setFile}/>        
       </div>
       <TextContainer users={users} />
     </div>

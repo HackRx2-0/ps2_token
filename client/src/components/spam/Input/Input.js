@@ -11,9 +11,10 @@ import { Typography, Button } from "@material-ui/core";
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
+import SendIcon from '@material-ui/icons/Send';
 import CardActions from '@material-ui/core/CardActions';
 import {Link} from 'react-router-dom'
+import AttachFileIcon from '@material-ui/icons/AttachFile';
 
 import "./Input.css";
 import circle from '../../../assets/circle.png';
@@ -174,8 +175,14 @@ const DialogTitle = withStyles(styles)((props) => {
     );
   }
 
-const Input = ({ message, setMessage, sendMessage }) => {
+const Input = ({ message, setMessage, sendMessage, setFile }) => {
     const classes =useStyles();
+
+    const selectFile = (e) => {
+      setMessage(e.target.files[0].name);
+      setFile(e.target.files[0]);
+    }
+
     return(
     <div className={classes.inputDiv}>
         <div className={classes.recBtn}>
@@ -183,16 +190,23 @@ const Input = ({ message, setMessage, sendMessage }) => {
         </div>
     <form className="Input_Form">
         <Divider/>
-        <input 
-            className="input"  
-            type="text" 
-            placeholder="Type a message..." 
-            value={message} 
-            onChange={(event) => setMessage(event.target.value)}
-            onKeyPress={(event) => event.key === 'Enter' ? sendMessage(event) : null}>                
-        </input>
-        <button className="sendButton" onClick={(event) => sendMessage(event)}>Send</button>
-        {/* <input  onChange={(event) => setMessage(event.target.value)} type="file"/>
+        <div className="inputDiv">
+            <label for="file-send" className="fileBtn"> <AttachFileIcon className="icon" /> </label>
+            <input type="file" onChange={selectFile} id='file-send' style={{ display : "none"}} />
+            
+            <input 
+                className="input"  
+                type="text" 
+                placeholder="Type a message..." 
+                value={message} 
+                onChange={(event) => setMessage(event.target.value)}
+                onKeyPress={(event) => event.key === 'Enter' ? sendMessage(event) : null}>                
+            </input>
+            <button className="sendButton" onClick={(event) => sendMessage(event)}> <SendIcon className="send-icon" /> </button>
+            
+        </div>
+
+       {/* <input  onChange={(event) => setMessage(event.target.value)} type="file"/>
         */}<Divider/> 
     </form>
     </div>

@@ -2,35 +2,53 @@ import React from 'react'
 
 import './Message.css';
 
-const Message = ({ message: { text, user }, name }) => {
+const Image = ({blob,classes}) => {
+
+  const [src,setSrc] = React.useState("");
+  
+  React.useEffect(() => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = function () {
+      setSrc(reader.result)
+    }
+  },[blob])
+  return(
+    <img src={src} className={classes} style={{ width : 150, height : "auto", borderRadius : "20px", margin : "5px"}} alt="img" />
+  )
+}
+
+const Message = ({ message, name }) => {
+  const { text, user} = message;
     let isSentByCurrentUser = false;
 
     const trimmedName = name;
 
-    try {
-      const trimmedName = name.trim().toLowerCase();
-    } catch (error) {
-      console.log(error);
-    }
-
     if(user === trimmedName) {
         isSentByCurrentUser = true;
     }
-  
+    
+    let blob ;
+    if (message.type == "file"){
+      blob = new Blob([message.body], {type : message.type})
+    }
+
   return(
       isSentByCurrentUser
       ? (
           <div className="messageContainer justifyEnd">
               <p className="sentText pr-10">{trimmedName}</p>
               <div className="messageBox backgroundBlue">
-                <p className="messageText colorWhite">{text}</p>
+                { message.type == "file" && <Image blob={blob} classes="msg-img" />}
+                {text && <p className="messageText colorWhite">{text}</p>}
               </div>
           </div>
       )
       : (
         <div className="messageContainer justifyStart">
         <div className="messageBox backgroundLight">
-          <p className="messageText colorDark">{text}</p>
+            { message.type == "file" && <Image blob={blob} classes="dark-msg-img" />}
+            {text && <p className="messageText colorDark">{text}</p>}
         </div>
         <p className="sentText pl-10">{user}</p>
     </div>
