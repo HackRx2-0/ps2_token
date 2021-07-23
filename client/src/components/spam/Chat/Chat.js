@@ -3,6 +3,7 @@ import queryString from "query-string";
 import io from "socket.io-client";
 import { useParams } from 'react-router-dom'
 import {useHistory} from 'react-router'
+import {useMutation} from 'react-query'
 import './Chat.css';
 
 import InfoBar from '../InfoBar/InfoBar.js';
@@ -10,10 +11,19 @@ import Input from '../Input/Input.js';
 import Messages from '../Messages/Messages.js';
 import TextContainer from "../TextContainer/TextContainer";
 import {useLocation} from "react-router-dom"
+import { sendDataApi } from '../../../api/Auth'
 
 let socket;
 
-const Chat = ({ location, roomId }) => {
+const RoomBar = ({room}) => {
+  return (
+    <div className="root-room-bar">
+      <span className="heading">{room}</span>
+    </div>
+  )
+}
+
+const Chat = () => {
   const [name, setName] = useState(JSON.parse(localStorage.getItem("profile")).name);
   const [room, setRoom] = useState(useParams().id);
   const [users, setUsers] = useState("");
@@ -23,6 +33,8 @@ const Chat = ({ location, roomId }) => {
   const history = useHistory();
   const ENDPOINT = "localhost:5000";
   
+  const sendData = useMutation(data => sendDataApi(data))
+
   let getRoom = useParams().id;
   console.log(getRoom)
 
@@ -93,6 +105,7 @@ const Chat = ({ location, roomId }) => {
       setMessage("");
     }
     else if (message) {
+      sendData.mutate(message);
       socket.emit("sendMessage", message, () => setMessage(""));
     }
     
@@ -102,13 +115,13 @@ const Chat = ({ location, roomId }) => {
     // });
   };
   
-
   return (
     <div className="outerContainer">
       <div className="container">
+        <RoomBar room={room}/>
          {/* <InfoBar room={room} /> */}
          <Messages messages={messages} name={name} />
-         <Input message={message} setMessage={setMessage} sendMessage={sendMessage} setFile={setFile}/>        
+         <Input message={message} setMessage={setMessage} sendMessage={sendMessage} setFile={setFile} prods={sendData.data ? sendData.data.data : null}/>        
       </div>
       <TextContainer users={users} />
     </div>

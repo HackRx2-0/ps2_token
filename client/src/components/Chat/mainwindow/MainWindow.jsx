@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent : "flex-start",
     backgroundColor: "#282C34",
-    padding : "10px 4px ",
+    padding : "20px ",
     borderRadius : "4px",
     margin : "10px 15px",
 //     4EB4CB
@@ -82,13 +82,15 @@ const useStyles = makeStyles((theme) => ({
     "&:hover":{
         backgroundColor:"#282C34"
     },
-    textDecoration : "none"
+    textDecoration : "none",
+    fontSize: "16px",
+    letterSpacing: "1px"
   },
   activeBtn: {
     display: "flex",
     justifyContent : "flex-start",
     backgroundColor: "#4EB4CB",
-    padding : "10px 4px ",
+    padding : "20px",
     borderRadius : "4px",
     margin : "10px 15px",
 //     4EB4CB
@@ -100,7 +102,9 @@ const useStyles = makeStyles((theme) => ({
     "&:hover":{
         backgroundColor:"#1EB4CB"
     },
-    textDecoration : "none"
+    textDecoration : "none",
+    fontSize: "16px",
+    letterSpacing: "1px"
   },
   
 }));
@@ -118,7 +122,7 @@ function ResponsiveDrawer(props) {
   };
 
   const Groups = ({search}) => {
-    const GROUP=["all-community","test"];
+    const GROUP=["all-community","gaming-community","school-community","study","chill","tech","HackrX"];
     return (
       <>
      {
@@ -197,8 +201,7 @@ function ResponsiveDrawer(props) {
         </Hidden>
       </nav>
       <main className={classes.content}>
-        <Chat roomId={room} />
-           
+        <Chat key={room} />
       </main>
     </div>
   );

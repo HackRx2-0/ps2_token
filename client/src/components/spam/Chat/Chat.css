@@ -17,6 +17,11 @@
   width: 100%;
   margin-left: 340px;
 }
+
+.root-room-bar {
+  position: fixed;
+}
+
 @media (max-width: 1279px) {
   .container {
     margin-left: 0;

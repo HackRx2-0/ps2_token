@@ -15,6 +15,7 @@ import SendIcon from '@material-ui/icons/Send';
 import CardActions from '@material-ui/core/CardActions';
 import {Link} from 'react-router-dom'
 import AttachFileIcon from '@material-ui/icons/AttachFile';
+import Badge from '@material-ui/core/Badge';
 
 import "./Input.css";
 import circle from '../../../assets/circle.png';
@@ -69,6 +70,7 @@ const useStyles = makeStyles(theme=> ({
       width : "100%",
       display : "flex",
       justifyContent : "center",
+      cursor : "pointer"
     }
 })) 
 const styles = (theme) => ({
@@ -110,56 +112,58 @@ const DialogTitle = withStyles(styles)((props) => {
       padding: theme.spacing(1),
     },
   }))(MuiDialogActions);
-  
-  function ProdCard(data) {
-    const classes = useStyles();
-  
-    return (
-      <Card className={classes.root}>
-        <CardHeader
-          title={"phone"}
-        />
-        <CardMedia
-          className={classes.media}
-          image="https://image01.realme.net/general/20210611/1623400675833.png"
-          title={'phone'}
-        />
-        <CardActions disableSpacing>
-          <Link to={"#"} aria-label="add to favorites" className={classes.link}>
-            Buy
-          </Link>
-        </CardActions>
-      </Card>
-    );
-  }
 
-  const Recommend = ({ data }) =>{
+
+  const Recommend = ({ prods }) =>{
     const classes = useStyles();
-    const [open,setOpen] = useState(false);
+    console.log(prods)
+    const [open,setOpen] = useState(false );
+
+    React.useEffect(() => {setOpen(Boolean( prods && prods.product && prods.product.productName ))},[Boolean(prods && prods.product )])
+
     const handleClick = () => {
         setOpen(!open);
+        
     }
-
-    const prods = [{name: "prod1" , link : "#", img: "https://image01.realme.net/general/20210611/1623400675833.png"}, {name: "prod1" , link : "#", img: "https://image01.realme.net/general/20210611/1623400675833.png"},{name: "prod1" , link : "#", img: "https://image01.realme.net/general/20210611/1623400675833.png"},{name: "prod1" , link : "#", img: "https://image01.realme.net/general/20210611/1623400675833.png"}, ]
-
     return (
         <>
         <div className={classes.recommendRoot} >
             <IconButton onClick={handleClick}>
-                <img className={classes.icon} src={circle} alt="icon" />
+                {
+                  prods && prods.product && prods.product.productImage ?
+                <Badge color="secondary" variant="dot">
+                  <img className={classes.icon} src={circle} alt="icon" />
+                </Badge>
+                :
+                  <img className={classes.icon} src={circle} alt="icon" />
+                }
             </IconButton>
         </div>
-        <Dialog onClose={handleClick} aria-labelledby="customized-dialog-title" open={open} classes={{ paper : classes.paper}}>
+        <Dialog onClose={handleClick} aria-labelledby="customized-dialog-title" open={ open } classes={{ paper : classes.paper}}>
           <DialogTitle id="customized-dialog-title" onClose={handleClick}>
             Recommendations
           </DialogTitle>
           <DialogContent dividers>
               <div className={classes.prods}>
                 {
-                  prods.length > 0 ?
-                  prods.map((p,key) => (
-                    <ProdCard data={p} key={key}/>
-                  ))
+                  prods && prods.product && prods.product.productImage?
+                  
+                  <Card className={classes.root}>
+                    <CardHeader
+                      title={prods.product.productName}
+                      subheader={prods.product.productPrice}
+                    />
+                    <CardMedia
+                      className={classes.media}
+                      image={prods.product.productImage}
+                      title={'phone'}
+                    />
+                    <CardActions disableSpacing>
+                      <a href={prods.product.productUrl} target="_blank" aria-label="add to favorites" className={classes.link}>
+                        Buy
+                      </a>
+                    </CardActions>
+                  </Card>
                   :
                   <span >Nothing to show here.</span>
                 }
@@ -175,7 +179,7 @@ const DialogTitle = withStyles(styles)((props) => {
     );
   }
 
-const Input = ({ message, setMessage, sendMessage, setFile }) => {
+const Input = ({ message, setMessage, sendMessage, setFile, prods }) => {
     const classes =useStyles();
 
     const selectFile = (e) => {
@@ -186,7 +190,7 @@ const Input = ({ message, setMessage, sendMessage, setFile }) => {
     return(
     <div className={classes.inputDiv}>
         <div className={classes.recBtn}>
-            <Recommend />
+            <Recommend prods={prods} />
         </div>
     <form className="Input_Form">
         <Divider/>
